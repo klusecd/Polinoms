@@ -33,14 +33,11 @@ public:
 	T GetFirst() { return head->data; }
 
 	void Clear() {
-		Iterator it = begin();
-		while (it != end()) {
-			Iterator tmp(it->next);
-			delete* it;
-			it = tmp;
+		if (head != nullptr) {
+			while (head->next != head)
+				Pop_front();
+			size = 0;
 		}
-		head = nullptr;
-		size = 0;
 	}
 
 	Node<T>* Push_front(T data) {
@@ -60,7 +57,7 @@ public:
 
 	void Pop_front() {
 		if (!size) { throw "list is empty"; }
-		Node* tmp = head;
+		Node<T>* tmp = head;
 		head = tmp->next;
 		delete tmp;
 		size--;
@@ -99,7 +96,7 @@ public:
 		Iterator() { current = head; }
 		Iterator(Node<T>* n) { current = n; }
 		Iterator(const Iterator& iter) { current = iter.current; }
-		Node<T>*& operator*() { return current; }
+		Node<T>& operator*() { return *current; }
 		Node<T>*& operator->() { return current; }
 		Iterator operator++() {
 			if (current != nullptr)
